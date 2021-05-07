@@ -32,6 +32,7 @@ namespace MacApp05Game.Controllers
         {
             Coins = new List<AnimatedSprite>();
         }
+        
         /// <summary>
         /// Create an animated sprite of a copper coin
         /// which could be collected by the player for a score
@@ -53,7 +54,7 @@ namespace MacApp05Game.Controllers
             Coins.Add(coin);
         }
 
-        public void HasCollided(AnimatedPlayer player)
+        public void HasCollided(PlayerSprite player)
         {
             foreach (AnimatedSprite coin in Coins)
             {

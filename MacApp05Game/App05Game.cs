@@ -16,7 +16,7 @@ namespace MacApp05Game
     /// random coins and the enemy tries to catch the player.
     /// </summary>
     /// <authors>
-    /// Derek Peacock & Andrei Cruceru
+    /// Abdulla AlQattan 
     /// </authors>
     public class App05Game : Game
     {
@@ -88,7 +88,7 @@ namespace MacApp05Game
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundImage = Content.Load<Texture2D>(
-                "images/green_background720p");
+                "images/space01");
 
             // Load Music and SoundEffects
 

@@ -88,12 +88,13 @@ namespace MacApp05Game
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             backgroundImage = Content.Load<Texture2D>(
-                "images/space01");
+                "images/Space6000x4000");
 
             // Load Music and SoundEffects
 
             SoundController.LoadContent(Content);
-            SoundController.PlaySong("Adventure");
+            //SoundController.PlaySong("Adventure");
+            
             flameEffect = SoundController.GetSoundEffect("Flame");
 
             // Load Fonts

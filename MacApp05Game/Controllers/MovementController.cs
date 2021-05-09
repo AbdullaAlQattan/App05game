@@ -16,13 +16,13 @@ namespace MacApp05Game.Controllers
 
                 Up = Keys.Up,
                 Down = Keys.Down,
-                Left = Keys.Left,
-                Right = Keys.Right,
+                Left = Keys.A,
+                Right = Keys.D,
 
                 // Rotate and Move
 
-                TurnLeft = Keys.A,
-                TurnRight = Keys.D,
+                TurnLeft = Keys.Left,
+                TurnRight = Keys.Right,
                 Forward = Keys.Space
             };
         }

@@ -117,11 +117,8 @@ namespace MacApp05Game
         /// </summary>
         private void SetupAsteroidController()
         {
-            Texture2D asteroidImage = Content.Load<Texture2D>(
-               "images/asteroid-1");
-
             asteroidController = new AsteroidController();
-            asteroidController.CreateAsteroid(graphicsDevice, asteroidImage);
+            asteroidController.CreateAsteroids(graphicsDevice, Content);
         }
 
         /// <summary>

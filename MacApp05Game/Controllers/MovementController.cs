@@ -23,7 +23,8 @@ namespace MacApp05Game.Controllers
 
                 TurnLeft = Keys.Left,
                 TurnRight = Keys.Right,
-                Forward = Keys.Space
+                Forward = Keys.Up,
+
             };
         }
 

@@ -22,8 +22,8 @@ namespace MacApp05Game
     {
         #region Constants
 
-        public const int HD_Height = 1080;
-        public const int HD_Width = 1920;
+        public const int HD_Height = 900;
+        public const int HD_Width = 1400;
 
         #endregion
 
@@ -46,8 +46,8 @@ namespace MacApp05Game
         // asteroid controller
         private AsteroidController asteroidController;
 
-        private int score;
-        private int energy;
+        public int score;
+        public int energy;
 
         #endregion
 
@@ -77,6 +77,16 @@ namespace MacApp05Game
             coinsController = new CoinsController();
 
             base.Initialize();
+        }
+        public  void UpdateScore()
+        {
+            score = score + 1;
+        }
+
+
+        public void UpdateHealth()
+        {
+            energy = energy - 25;
         }
 
         /// <summary>

@@ -103,8 +103,8 @@ namespace MacApp05Game.Controllers
                     asteroid.IsAlive = false;
                     asteroid.IsVisible = false;
 
-                   App05Game appscore = new App05Game();
-                   appscore.UpdateHealth();
+                   //App05Game appscore = new App05Game();
+                   //appscore.UpdateHealth();
 
 
                 }

@@ -203,7 +203,6 @@ namespace MacApp05Game
             {
                 state = GameStates.won;
             }
-            shipSprite.Score = shipSprite.Score + 10;
         }
 
 
@@ -213,7 +212,6 @@ namespace MacApp05Game
             {
                 state = GameStates.lost;
             }
-            shipSprite.Health = shipSprite.Health - 25;
         }
 
         /// <summary>

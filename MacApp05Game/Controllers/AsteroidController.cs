@@ -9,7 +9,7 @@ using System.Text;
 
 namespace MacApp05Game.Controllers
 {
-    public class AsteroidController
+    public class AsteroidController 
     {
         public const double MaxTime = 5.0;
 
@@ -18,7 +18,7 @@ namespace MacApp05Game.Controllers
         private readonly List<Sprite> Asteroids;
         private SoundEffect explosionEffect;
 
-        private double timer;
+       private double timer;
 
         private Texture2D[] images;
 
@@ -93,6 +93,8 @@ namespace MacApp05Game.Controllers
 
         public void HasCollided(PlayerSprite player)
         {
+           
+
             foreach (Sprite asteroid in Asteroids)
             {
                 if (asteroid.HasCollided(player) && asteroid.IsAlive)
@@ -102,13 +104,11 @@ namespace MacApp05Game.Controllers
                     asteroid.IsActive = false;
                     asteroid.IsAlive = false;
                     asteroid.IsVisible = false;
-
-                   //App05Game appscore = new App05Game();
-                   //appscore.UpdateHealth();
-
-
+                    player.Health -= 25;
                 }
+                              
             }
+           
         }
 
         public void Update(GameTime gameTime)
@@ -127,7 +127,7 @@ namespace MacApp05Game.Controllers
                 asteroid.Update(gameTime);
             }
         }
-
+    
         public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Sprite asteroid in Asteroids)

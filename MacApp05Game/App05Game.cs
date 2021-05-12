@@ -7,6 +7,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MacApp05Game
 {
+    public enum GameStates
+    {
+        starting, playing, won, lost
+    }
+
     /// <summary>
     /// This game creates a variety of sprites as an example.  
     /// There is no game to play yet. The spaceShip and the 
@@ -44,10 +49,10 @@ namespace MacApp05Game
         // Ship
         private PlayerSprite shipSprite;
         // asteroid controller
+
         private AsteroidController asteroidController;
 
-        public int score;
-        public int energy;
+        private GameStates state;
 
         #endregion
 
@@ -71,23 +76,12 @@ namespace MacApp05Game
 
             graphicsDevice = graphicsManager.GraphicsDevice;
 
-            score = 0;
-            energy = 100;
 
             coinsController = new CoinsController();
 
             base.Initialize();
         }
-        public  void UpdateScore()
-        {
-            score = score + 1;
-        }
-
-
-        public void UpdateHealth()
-        {
-            energy = energy - 25;
-        }
+      
 
         /// <summary>
         /// use Content to load your game images, fonts,
@@ -117,8 +111,12 @@ namespace MacApp05Game
             SetupAsteroidController();
 
 
+
             Texture2D coinSheet = Content.Load<Texture2D>("images/coin_copper");
             coinsController.CreateCoin(graphicsDevice, coinSheet);
+
+            state = GameStates.playing;
+
         }
 
         /// <summary>
@@ -147,6 +145,9 @@ namespace MacApp05Game
                 Speed = 200,
                 DirectionControl = DirectionControl.Rotational
             };
+
+            shipSprite.Score = 0;
+            shipSprite.Health = 100;
         }
     
 
@@ -156,25 +157,63 @@ namespace MacApp05Game
         /// Called 60 frames/per second and updates the positions
         /// of all the drawable objects
         /// </summary>
-        /// <param name="gameTime">
+        /// <param name='gameTime'>
         /// Can work out the elapsed time since last call if
         /// you want to compensate for different frame rates
         /// </param>
         protected override void Update(GameTime gameTime)
         {
+          
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
-                Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                GameOver(spriteBatch);
+                Exit();
 
-            // Update Asteroids
+            }
 
-            shipSprite.Update(gameTime);
-            asteroidController.Update(gameTime);
-            asteroidController.HasCollided(shipSprite);
+            if (state == GameStates.playing)
+            {
+                // Update Asteroids
 
-            coinsController.Update(gameTime);
-            coinsController.HasCollided(shipSprite);
+                shipSprite.Update(gameTime);
+                asteroidController.Update(gameTime);
+                asteroidController.HasCollided(shipSprite);
 
-            base.Update(gameTime);
+                UpdateScore();
+                UpdateHealth();
+
+                coinsController.Update(gameTime);
+                coinsController.HasCollided(shipSprite);
+
+
+                base.Update(gameTime);
+
+            }
+
+
+        }
+
+        /// <summary>
+        /// When a coin is collected the score gets updated.
+        /// </summary>
+        public void UpdateScore()
+        {
+            if (shipSprite.Score == 100)
+            {
+                state = GameStates.won;
+            }
+            shipSprite.Score = shipSprite.Score + 10;
+        }
+
+
+        public void UpdateHealth()
+        {
+            if (shipSprite.Health == 0)
+            {
+                state = GameStates.lost;
+            }
+            shipSprite.Health = shipSprite.Health - 25;
         }
 
         /// <summary>
@@ -200,6 +239,8 @@ namespace MacApp05Game
             coinsController.Draw(spriteBatch);
 
             DrawGameStatus(spriteBatch);
+         
+          
             DrawGameFooter(spriteBatch);
 
             spriteBatch.End();
@@ -215,7 +256,7 @@ namespace MacApp05Game
             int margin = 50;
 
             Vector2 topLeft = new Vector2(margin, 4);
-            string status = $"Score = {score:##0}";
+            string status = $"Score = {shipSprite.Score:##0}";
 
             spriteBatch.DrawString(arialFont, status, topLeft, Color.White);
 
@@ -224,11 +265,17 @@ namespace MacApp05Game
             Vector2 topCentre = new Vector2((HD_Width/2 - gameSize.X/2), 4);
             spriteBatch.DrawString(arialFont, game, topCentre, Color.White);
 
-            string healthText = $"Health = {energy}%";
+            string healthText = $"Health = {shipSprite.Health}%";
             Vector2 healthSize = arialFont.MeasureString(healthText);
             Vector2 topRight = new Vector2(HD_Width - (healthSize.X + margin), 4);
             spriteBatch.DrawString(arialFont, healthText, topRight, Color.White);
 
+        }
+        public void GameOver(SpriteBatch spriteBatch)
+        {
+            int margin = 200;
+            Vector2 topLeft = new Vector2(margin, 4);
+            string status = $"Score = {shipSprite.Score:##0}";
         }
 
         /// <summary>

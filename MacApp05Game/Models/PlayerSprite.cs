@@ -26,6 +26,9 @@ namespace MacApp05Game.Models
 
         public DirectionControl DirectionControl { get; set; }
 
+        public int Score { get; set; }
+        public int Health { get; set; }
+
         public PlayerSprite(): base()
         {
             DirectionControl = DirectionControl.Rotational;

@@ -65,6 +65,7 @@ namespace MacApp05Game.Controllers
                     coin.IsActive = false;
                     coin.IsAlive = false;
                     coin.IsVisible = false;
+                    player.Score += 10;
                 }
             }           
         }

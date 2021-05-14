@@ -27,7 +27,7 @@ namespace MacApp05Game
     {
         #region Constants
 
-        public const int HD_Height = 900;
+        public const int HD_Height = 800;
         public const int HD_Width = 1400;
 
         #endregion
@@ -64,7 +64,7 @@ namespace MacApp05Game
         }
 
         /// <summary>
-        /// Setup the game window size to 720P 1280 x 720 pixels
+        /// Setup the game window size to 720P 800 x 1400 pixels
         /// Simple fixed playing area with no camera or scrolling
         /// </summary>
         protected override void Initialize()
@@ -81,7 +81,7 @@ namespace MacApp05Game
 
             base.Initialize();
         }
-      
+
 
         /// <summary>
         /// use Content to load your game images, fonts,
@@ -97,7 +97,7 @@ namespace MacApp05Game
 
             SoundController.LoadContent(Content);
             //SoundController.PlaySong("Adventure");
-            
+
             bulletEffect = SoundController.GetSoundEffect("Bullets");
 
             // Load Fonts
@@ -109,14 +109,26 @@ namespace MacApp05Game
 
             SetupSpaceShip();
             SetupAsteroidController();
+            SetupCoins();
 
 
 
-            Texture2D coinSheet = Content.Load<Texture2D>("images/coin_copper");
-            coinsController.CreateCoin(graphicsDevice, coinSheet);
+
 
             state = GameStates.playing;
 
+        }
+        /// <summary>
+        /// This is used create multiple coins at random locations
+        /// </summary>
+        private void SetupCoins()
+        {
+            Texture2D coinSheet = Content.Load<Texture2D>("images/coin_copper");
+            coinsController.CreateCoin(graphicsDevice, coinSheet);
+            coinsController.CreateCoin(graphicsDevice, coinSheet);
+            coinsController.CreateCoin(graphicsDevice, coinSheet);
+            coinsController.CreateCoin(graphicsDevice, coinSheet);
+            coinsController.CreateCoin(graphicsDevice, coinSheet);
         }
 
         /// <summary>
@@ -131,8 +143,8 @@ namespace MacApp05Game
 
         /// <summary>
         /// This is a Sprite that can be controlled by a
-        /// player using Rotate Left = A, Rotate Right = D, 
-        /// Forward = Space
+        /// player using Rotate Left = leftarrow, Rotate Right = rightarrow, 
+        /// Forward = forwardarrow
         /// </summary>
         private void SetupSpaceShip()
         {
@@ -149,7 +161,7 @@ namespace MacApp05Game
             shipSprite.Score = 0;
             shipSprite.Health = 100;
         }
-    
+
 
 
 
@@ -163,20 +175,20 @@ namespace MacApp05Game
         /// </param>
         protected override void Update(GameTime gameTime)
         {
-          
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
+
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                GameOver(spriteBatch);
+
                 Exit();
 
             }
 
             if (state == GameStates.playing)
             {
-                // Update Asteroids
+                // Update Asteriod
 
                 shipSprite.Update(gameTime);
+
                 asteroidController.Update(gameTime);
                 asteroidController.HasCollided(shipSprite);
 
@@ -192,6 +204,8 @@ namespace MacApp05Game
             }
 
 
+
+
         }
 
         /// <summary>
@@ -199,7 +213,7 @@ namespace MacApp05Game
         /// </summary>
         public void UpdateScore()
         {
-            if (shipSprite.Score == 100)
+            if (shipSprite.Score == 50)
             {
                 state = GameStates.won;
             }
@@ -237,9 +251,19 @@ namespace MacApp05Game
             coinsController.Draw(spriteBatch);
 
             DrawGameStatus(spriteBatch);
-         
-          
+
+
             DrawGameFooter(spriteBatch);
+
+            if (state == GameStates.lost)
+            {
+                DrawGameLost(spriteBatch);
+            }
+
+            if (state == GameStates.won)
+            {
+                DrawGameWon(spriteBatch);
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -260,7 +284,7 @@ namespace MacApp05Game
 
             string game = "Space Asteroids";
             Vector2 gameSize = arialFont.MeasureString(game);
-            Vector2 topCentre = new Vector2((HD_Width/2 - gameSize.X/2), 4);
+            Vector2 topCentre = new Vector2((HD_Width / 2 - gameSize.X / 2), 4);
             spriteBatch.DrawString(arialFont, game, topCentre, Color.White);
 
             string healthText = $"Health = {shipSprite.Health}%";
@@ -268,13 +292,11 @@ namespace MacApp05Game
             Vector2 topRight = new Vector2(HD_Width - (healthSize.X + margin), 4);
             spriteBatch.DrawString(arialFont, healthText, topRight, Color.White);
 
+
+
+
         }
-        public void GameOver(SpriteBatch spriteBatch)
-        {
-            int margin = 200;
-            Vector2 topLeft = new Vector2(margin, 4);
-            string status = $"Score = {shipSprite.Score:##0}";
-        }
+
 
         /// <summary>
         /// Display the Module, the authors and the application name
@@ -291,7 +313,7 @@ namespace MacApp05Game
             Vector2 namesSize = verdanaFont.MeasureString(names);
             Vector2 appSize = verdanaFont.MeasureString(app);
 
-            Vector2 bottomCentre = new Vector2((HD_Width - namesSize.X)/ 2, HD_Height - margin);
+            Vector2 bottomCentre = new Vector2((HD_Width - namesSize.X) / 2, HD_Height - margin);
             Vector2 bottomLeft = new Vector2(margin, HD_Height - margin);
             Vector2 bottomRight = new Vector2(HD_Width - appSize.X - margin, HD_Height - margin);
 
@@ -299,6 +321,32 @@ namespace MacApp05Game
             spriteBatch.DrawString(verdanaFont, module, bottomLeft, Color.Yellow);
             spriteBatch.DrawString(verdanaFont, app, bottomRight, Color.Yellow);
 
+        }
+        public void DrawGameLost(SpriteBatch spriteBatch)
+        {
+            string msg1 = "You Lost !!! Game Over";
+            string msg2 = "Press the ESC Key to EXIT";
+
+            Vector2 Centre = new Vector2((HD_Width) / 2, (HD_Height) / 2);
+            Vector2 Centre2 = new Vector2((HD_Width) / 2, (HD_Height) / 2 + 20);
+
+            spriteBatch.DrawString(verdanaFont, msg1, Centre, Color.Red);
+
+
+            spriteBatch.DrawString(verdanaFont, msg2, Centre2, Color.Yellow);
+        }
+
+        public void DrawGameWon(SpriteBatch spriteBatch)
+        {
+            string msg1 = "You Won the Game !!!";
+            string msg2 = "Press the ESC Key to EXIT";
+
+            Vector2 Centre = new Vector2((HD_Width) / 2, (HD_Height) / 2);
+            Vector2 Centre2 = new Vector2((HD_Width) / 2, (HD_Height) / 2 + 20);
+
+            spriteBatch.DrawString(verdanaFont, msg1, Centre, Color.Green);
+
+            spriteBatch.DrawString(verdanaFont, msg2, Centre2, Color.Yellow);
         }
     }
 }

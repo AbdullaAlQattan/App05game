@@ -82,7 +82,6 @@ namespace MacApp05Game
             base.Initialize();
         }
 
-
         /// <summary>
         /// use Content to load your game images, fonts,
         /// music and sound effects
@@ -110,10 +109,6 @@ namespace MacApp05Game
             SetupSpaceShip();
             SetupAsteroidController();
             SetupCoins();
-
-
-
-
 
             state = GameStates.playing;
 
@@ -162,9 +157,6 @@ namespace MacApp05Game
             shipSprite.Health = 100;
         }
 
-
-
-
         /// <summary>
         /// Called 60 frames/per second and updates the positions
         /// of all the drawable objects
@@ -203,9 +195,6 @@ namespace MacApp05Game
 
             }
 
-
-
-
         }
 
         /// <summary>
@@ -218,7 +207,6 @@ namespace MacApp05Game
                 state = GameStates.won;
             }
         }
-
 
         public void UpdateHealth()
         {
@@ -291,12 +279,7 @@ namespace MacApp05Game
             Vector2 healthSize = arialFont.MeasureString(healthText);
             Vector2 topRight = new Vector2(HD_Width - (healthSize.X + margin), 4);
             spriteBatch.DrawString(arialFont, healthText, topRight, Color.White);
-
-
-
-
         }
-
 
         /// <summary>
         /// Display the Module, the authors and the application name
